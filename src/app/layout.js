@@ -13,6 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Analytics/>
+      <SpeedInsights />
       <body className="bg-dark text-white">
         <Header />
         <main>{children}</main>
@@ -22,4 +23,3 @@ export default function RootLayout({ children }) {
   );
   
 }
-<SpeedInsights />
