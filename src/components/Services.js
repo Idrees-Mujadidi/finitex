@@ -1,79 +1,71 @@
 "use client";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { FaCode, FaDatabase, FaPalette, FaServer } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import { useCallback } from "react";
 
 export default function Services() {
+  const router = useRouter();
+
   const services = [
     {
       title: "Web Development",
       desc: "Modern, scalable, lightning-fast websites tailored for your business.",
-      icon: <FaCode className="text-[#00BFFF.] text-5xl mb-4" />,
+      icon: <FaCode className="text-[#00BFFF] text-4xl" />,
       gradient: "from-[#00BFFF] to-[#4169E1]",
     },
     {
       title: "Database Solutions",
       desc: "Secure, high-performance databases optimized for your data needs.",
-      icon: <FaDatabase className="text-[#32CD32] text-5xl mb-4" />,
+      icon: <FaDatabase className="text-[#32CD32] text-4xl" />,
       gradient: "from-[#32CD32] to-[#92FE9D]",
     },
     {
       title: "Graphics Designing",
       desc: "Creative branding and visuals that define your digital identity.",
-      icon: <FaPalette className="text-[#FF69B4] text-5xl mb-4" />,
+      icon: <FaPalette className="text-[#FF69B4] text-4xl" />,
       gradient: "from-[#FF69B4] to-[#FFD93D]",
     },
     {
       title: "Hosting & Domain",
       desc: "Reliable hosting and top-level domain registration services.",
-      icon: <FaServer className="text-[#FFD700] text-5xl mb-4" />,
+      icon: <FaServer className="text-[#FFD700] text-4xl" />,
       gradient: "from-[#FFD700] to-[#DD2476]",
     },
   ];
 
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
-
-  const handleMouseMove = (e) => {
-    const x = e.clientX - window.innerWidth / 2;
-    const y = e.clientY - window.innerHeight / 2;
-    setMouseX(x);
-    setMouseY(y);
-  };
-
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+  // Particles initialization
+  const particlesInit = useCallback(async (engine) => {
+    await loadSlim(engine);
   }, []);
 
-  const shapes = [
-    { size: 80, x: 50, y: 20, color: "bg-[#6C63FF]/20", moveFactor: 0.03 },
-    { size: 120, x: 300, y: 100, color: "bg-[#FF6B6B]/20", moveFactor: 0.02 },
-    { size: 60, x: 600, y: 50, color: "bg-[#00C9FF]/20", moveFactor: 0.04 },
-    { size: 100, x: 800, y: 150, color: "bg-[#FF512F]/20", moveFactor: 0.025 },
-  ];
+  const particlesOptions = {
+    particles: {
+      number: { value: 40, density: { enable: true, area: 800 } },
+      color: { value: "#ffffff" },
+      shape: { type: "circle" },
+      opacity: { value: 0.1 },
+      size: { value: { min: 2, max: 4 } },
+      move: { enable: true, speed: 0.5, outModes: { default: "bounce" } },
+    },
+    interactivity: { events: { onHover: { enable: false } } },
+    detectRetina: true,
+  };
 
   return (
     <section
       id="services"
-      className="bg-white text-black py-28 px-6 relative overflow-hidden"
+      className="bg-[#0f172a] text-white py-28 px-6 relative overflow-hidden font-sans"
     >
-      {/* Interactive Floating Shapes */}
-      {shapes.map((shape, index) => (
-        <motion.div
-          key={index}
-          className={`absolute rounded-full ${shape.color}`}
-          style={{
-            width: shape.size,
-            height: shape.size,
-            top: shape.y,
-            left: shape.x,
-            x: mouseX * shape.moveFactor,
-            y: mouseY * shape.moveFactor,
-          }}
-          transition={{ ease: "easeOut", duration: 0.5 }}
-        />
-      ))}
+      {/* Background Particles */}
+      <Particles
+        id="services-particles"
+        init={particlesInit}
+        options={particlesOptions}
+        className="absolute inset-0 z-0"
+      />
 
       <motion.div
         className="relative z-10 max-w-7xl mx-auto text-center"
@@ -82,30 +74,38 @@ export default function Services() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-5xl font-extrabold mb-6 text-[#00000]">Our Services</h2>
-        <p className="text-gray-700 text-lg mb-16 max-w-3xl mx-auto">
-          Delivering excellence through cutting-edge digital solutions and creative innovation.
+        <h2 className="text-5xl font-extrabold mb-6 text-white">
+          Our Services
+        </h2>
+        <p className="text-slate-300 text-lg mb-16 max-w-3xl mx-auto">
+          Delivering excellence through cutting-edge digital solutions and
+          creative innovation.
         </p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 relative z-10">
           {services.map((service, index) => (
             <motion.div
               key={index}
-              className="p-8 rounded-3xl shadow-xl text-center transform transition-all duration-300 hover:scale-105 flex flex-col justify-between h-full"
-              style={{
-                background: `linear-gradient(135deg, ${service.gradient})`,
-                boxShadow: "0 10px 20px rgba(0,0,0,0.15)",
-              }}
+              className="p-8 rounded-3xl text-center flex flex-col justify-between h-full cursor-pointer transition-all duration-300 hover:scale-105 shadow-2xl bg-white/5 backdrop-blur-sm"
               whileHover={{ y: -10 }}
             >
-              <div className="flex flex-col items-center">
-                <div className="p-4 rounded-full bg-white/20 mb-4">
+              <div className="flex flex-col items-center relative z-10">
+                <div className="p-5 rounded-full bg-white/10 mb-4 hover:bg-white/20 transition-all shadow-md hover:shadow-lg flex items-center justify-center w-20 h-20">
                   {service.icon}
                 </div>
-                <h3 className="text-2xl font-semibold mb-3 text-black">{service.title}</h3>
-                <p className="text-black/90 text-sm leading-relaxed mb-6">{service.desc}</p>
+                <h3 className="text-2xl font-semibold mb-3">{service.title}</h3>
+                <p className="text-white/90 text-sm leading-relaxed mb-6">
+                  {service.desc}
+                </p>
               </div>
-              <button className="bg-black text-white font-semibold px-6 py-2 rounded-full shadow-md hover:brightness-95 transition mt-auto">
+              <button
+                onClick={() =>
+                  router.push(
+                    `/contact?service=${encodeURIComponent(service.title)}`
+                  )
+                }
+                className="bg-white text-[#0f172a] font-semibold px-6 py-2 rounded-full shadow-md transition-colors duration-300 hover:bg-sky-400 hover:text-white mt-auto"
+              >
                 Request Service
               </button>
             </motion.div>
