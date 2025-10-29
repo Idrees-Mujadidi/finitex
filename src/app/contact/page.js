@@ -1,6 +1,6 @@
 "use client";
-
-import { useRef, useState, useCallback, useEffect } from "react";
+import { Suspense } from "react";
+import { useRef, useState, useCallback, useEffect, Suspense } from "react";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import { motion } from "framer-motion";
@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
-export default function ContactPage() {
+function ContactForm() {
   const formRef = useRef();
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -66,7 +66,7 @@ export default function ContactPage() {
         () => {
           toast.success("Message sent successfully!");
           e.target.reset();
-          setSelectedService(""); // reset select
+          setSelectedService("");
           setLoading(false);
         },
         (error) => {
@@ -94,7 +94,7 @@ export default function ContactPage() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-center">
-            Contact US
+            Contact Us
           </h1>
           <p className="text-white/80 text-center mb-10 max-w-2xl mx-auto leading-relaxed text-sm sm:text-base">
             Have a project in mind? Let’s collaborate and bring your ideas to
@@ -196,5 +196,16 @@ export default function ContactPage() {
         We look forward to creating something extraordinary together.
       </motion.p>
     </section>
+  );
+}
+
+// 👇 Wrap with Suspense to satisfy Next.js requirement
+export default function ContactPage() {
+  return (
+    <Suspense
+      fallback={<div className="text-center py-20 text-white">Loading...</div>}
+    >
+      <ContactForm />
+    </Suspense>
   );
 }
