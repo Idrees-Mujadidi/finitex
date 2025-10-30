@@ -7,46 +7,42 @@ import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import { motion, AnimatePresence } from "framer-motion";
 
-// 🔹 Main Page Component
+// 🔹 Wrapper Page (safe for Vercel)
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center py-20 px-6 relative overflow-hidden">
-      <Suspense
-        fallback={
-          <div className="text-center text-gray-400 text-lg">Loading...</div>
-        }
-      >
-        <ContactContent />
+      <Suspense fallback={<div className="text-center text-gray-400 text-lg">Loading...</div>}>
+        <ContactClient />
       </Suspense>
     </main>
   );
 }
 
-// 🔹 Client-only subcomponent that uses useSearchParams safely
-function ContactContent() {
+// 🔹 Actual Contact Client Component (contains logic & UI)
+function ContactClient() {
   const formRef = useRef();
   const searchParams = useSearchParams();
   const [selectedService, setSelectedService] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
-  // ✅ Capture service query param
+  // ✅ Capture service query param safely
   useEffect(() => {
     const serviceFromURL = searchParams.get("service");
     if (serviceFromURL) setSelectedService(serviceFromURL);
   }, [searchParams]);
 
-  // ✅ EmailJS handler
+  // ✅ EmailJS form submission
   const sendEmail = (e) => {
     e.preventDefault();
     setLoading(true);
 
     emailjs
       .sendForm(
-        "your_service_id", // replace with your EmailJS service ID
-        "your_template_id", // replace with your template ID
+        "your_service_id", // 🔧 Replace with your EmailJS service ID
+        "your_template_id", // 🔧 Replace with your EmailJS template ID
         formRef.current,
-        "your_public_key" // replace with your public key
+        "your_public_key" // 🔧 Replace with your EmailJS public key
       )
       .then(
         () => {
@@ -63,7 +59,7 @@ function ContactContent() {
       );
   };
 
-  // ✅ Particles setup
+  // ✅ Background Particles
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
@@ -83,27 +79,19 @@ function ContactContent() {
 
   return (
     <>
-      {/* Background Particles */}
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={particlesOptions}
-        className="absolute inset-0 z-0"
-      />
+      {/* Background Animation */}
+      <Particles id="tsparticles" init={particlesInit} options={particlesOptions} className="absolute inset-0 z-0" />
 
-      {/* Main Contact Card */}
+      {/* Contact Card */}
       <motion.div
         className="relative z-10 max-w-4xl w-full bg-white/10 backdrop-blur-md p-10 rounded-3xl shadow-2xl"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className="text-4xl font-bold text-center mb-6 text-white">
-          Contact Us
-        </h1>
+        <h1 className="text-4xl font-bold text-center mb-6 text-white">Contact Us</h1>
         <p className="text-center text-gray-300 mb-10 text-lg">
-          Have a project in mind? Fill out the form below and we’ll get in touch
-          with you shortly.
+          Have a project in mind? Fill out the form below and we’ll get in touch with you shortly.
         </p>
 
         {/* Form */}
@@ -125,18 +113,10 @@ function ContactContent() {
             />
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-          >
-            <label
-              htmlFor="service"
-              className="block text-sm font-medium text-sky-300 mb-2 tracking-wide"
-            >
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+            <label htmlFor="service" className="block text-sm font-medium text-sky-300 mb-2 tracking-wide">
               Select Service
             </label>
-
             <div className="relative group">
               <select
                 id="service"
@@ -148,27 +128,13 @@ function ContactContent() {
                  focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all 
                  duration-300 cursor-pointer hover:bg-white/20 backdrop-blur-md shadow-sm"
               >
-                <option value="" disabled hidden>
-                  Choose a service...
-                </option>
-                <option value="Web Development" className="bg-[#0f172a] text-white">
-                  Web Development
-                </option>
-                <option value="Database Solutions" className="bg-[#0f172a] text-white">
-                  Database Solutions
-                </option>
-                <option value="Graphics Designing" className="bg-[#0f172a] text-white">
-                  Graphics Designing
-                </option>
-                <option value="Hosting & Domain" className="bg-[#0f172a] text-white">
-                  Hosting & Domain
-                </option>
-                <option value="Inquiry" className="bg-[#0f172a] text-white">
-                  Other Inquiry
-                </option>
+                <option value="" disabled hidden>Choose a service...</option>
+                <option value="Web Development" className="bg-[#0f172a] text-white">Web Development</option>
+                <option value="Database Solutions" className="bg-[#0f172a] text-white">Database Solutions</option>
+                <option value="Graphics Designing" className="bg-[#0f172a] text-white">Graphics Designing</option>
+                <option value="Hosting & Domain" className="bg-[#0f172a] text-white">Hosting & Domain</option>
+                <option value="Inquiry" className="bg-[#0f172a] text-white">Other Inquiry</option>
               </select>
-
-              {/* Dropdown arrow icon */}
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sky-400 group-hover:text-sky-300 transition-colors duration-300 pointer-events-none">
                 ▼
               </span>
@@ -188,17 +154,16 @@ function ContactContent() {
             disabled={loading}
             whileHover={{ scale: loading ? 1 : 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 shadow-md ${loading
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-sky-400 hover:bg-sky-500 text-white"
-              }`}
+            className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 shadow-md ${
+              loading ? "bg-gray-500 cursor-not-allowed" : "bg-sky-400 hover:bg-sky-500 text-white"
+            }`}
           >
             {loading ? "Sending..." : "Send Message"}
           </motion.button>
         </form>
       </motion.div>
 
-      {/* ✅ Floating Animated Toast */}
+      {/* Success Toast */}
       <AnimatePresence>
         {sent && (
           <motion.div
