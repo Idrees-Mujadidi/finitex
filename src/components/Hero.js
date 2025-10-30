@@ -95,7 +95,7 @@ export default function Hero() {
             href="/contact"
             className="border border-sky-400 text-sky-400 px-10 py-4 rounded-2xl font-semibold hover:bg-sky-400 hover:text-black transition-all duration-300"
           >
-            Get in Touch
+            Get Demo
           </a>
         </motion.div>
       </motion.div>
