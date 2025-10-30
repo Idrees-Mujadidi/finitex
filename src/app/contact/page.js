@@ -1,183 +1,173 @@
 "use client";
 
-import { Suspense, useState, useEffect, useCallback, useRef } from "react";
-import { useSearchParams } from "next/navigation";
-import emailjs from "@emailjs/browser";
+import { useRef, useState, useCallback } from "react";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
+import { toast } from "react-hot-toast";
+import Image from "next/image";
 
-// 🔹 Wrapper Page (safe for Vercel)
 export default function ContactPage() {
-  return (
-    <main className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center py-20 px-6 relative overflow-hidden">
-      <Suspense fallback={<div className="text-center text-gray-400 text-lg">Loading...</div>}>
-        <ContactClient />
-      </Suspense>
-    </main>
-  );
-}
-
-// 🔹 Actual Contact Client Component (contains logic & UI)
-function ContactClient() {
   const formRef = useRef();
-  const searchParams = useSearchParams();
-  const [selectedService, setSelectedService] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
 
-  // ✅ Capture service query param safely
-  useEffect(() => {
-    const serviceFromURL = searchParams.get("service");
-    if (serviceFromURL) setSelectedService(serviceFromURL);
-  }, [searchParams]);
-
-  // ✅ EmailJS form submission
-  const sendEmail = (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    emailjs
-      .sendForm(
-        "your_service_id", // 🔧 Replace with your EmailJS service ID
-        "your_template_id", // 🔧 Replace with your EmailJS template ID
-        formRef.current,
-        "your_public_key" // 🔧 Replace with your EmailJS public key
-      )
-      .then(
-        () => {
-          setLoading(false);
-          setSent(true);
-          formRef.current.reset();
-          setSelectedService("");
-          setTimeout(() => setSent(false), 4000);
-        },
-        (error) => {
-          setLoading(false);
-          console.error("EmailJS Error:", error);
-        }
-      );
-  };
-
-  // ✅ Background Particles
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
 
   const particlesOptions = {
-    particles: {
-      number: { value: 40, density: { enable: true, area: 800 } },
-      color: { value: "#ffffff" },
-      shape: { type: "circle" },
-      opacity: { value: 0.1 },
-      size: { value: { min: 2, max: 4 } },
-      move: { enable: true, speed: 0.5, outModes: { default: "bounce" } },
+    background: { color: { value: "#1e3a8a" } },
+    fpsLimit: 60,
+    interactivity: {
+      events: { onHover: { enable: true, mode: "repulse" }, resize: true },
+      modes: { repulse: { distance: 120, duration: 0.4 } },
     },
-    interactivity: { events: { onHover: { enable: false } } },
+    particles: {
+      color: { value: "#ffffff" },
+      links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.25, width: 1 },
+      move: { enable: true, speed: 1, outModes: { default: "bounce" } },
+      number: { value: 60, density: { enable: true, area: 800 } },
+      opacity: { value: 0.5 },
+      shape: { type: "circle" },
+      size: { value: { min: 1, max: 4 } },
+    },
     detectRetina: true,
   };
 
+  const sendEmail = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    emailjs
+      .sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", formRef.current, "YOUR_PUBLIC_KEY")
+      .then(
+        () => {
+          toast.success("Message sent successfully!");
+          e.target.reset();
+          setLoading(false);
+        },
+        (error) => {
+          toast.error("Failed to send message. Try again!");
+          setLoading(false);
+          console.error(error);
+        }
+      );
+  };
+
   return (
-    <>
-      {/* Background Animation */}
-      <Particles id="tsparticles" init={particlesInit} options={particlesOptions} className="absolute inset-0 z-0" />
+    <section className="relative w-full min-h-[120vh] flex flex-col items-center justify-center overflow-hidden text-white px-6 py-20 md:py-28">
+      {/* Background Particles */}
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        options={particlesOptions}
+        className="absolute inset-0 z-0"
+      />
 
-      {/* Contact Card */}
-      <motion.div
-        className="relative z-10 max-w-4xl w-full bg-white/10 backdrop-blur-md p-10 rounded-3xl shadow-2xl"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h1 className="text-4xl font-bold text-center mb-6 text-white">Contact Us</h1>
-        <p className="text-center text-gray-300 mb-10 text-lg">
-          Have a project in mind? Fill out the form below and we’ll get in touch with you shortly.
-        </p>
+      {/* Main Grid */}
+      <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-stretch">
+        {/* Left: Contact Form */}
+        <motion.div
+          className="flex flex-col justify-center bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-8 sm:p-10 shadow-[0_0_40px_rgba(255,255,255,0.05)] hover:shadow-[0_0_60px_rgba(255,255,255,0.1)] transition-all h-full"
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-center">Get in Touch</h1>
+          <p className="text-white/80 text-center mb-10 max-w-2xl mx-auto leading-relaxed text-sm sm:text-base">
+            Have a project in mind? Let’s collaborate and bring your ideas to life.
+          </p>
 
-        {/* Form */}
-        <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
-          <div className="grid sm:grid-cols-2 gap-6">
-            <input
-              type="text"
-              name="user_name"
-              placeholder="Your Name"
-              required
-              className="w-full p-3 rounded-lg bg-white/10 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-sky-400"
-            />
-            <input
-              type="email"
-              name="user_email"
-              placeholder="Your Email"
-              required
-              className="w-full p-3 rounded-lg bg-white/10 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-sky-400"
-            />
-          </div>
-
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
-            <label htmlFor="service" className="block text-sm font-medium text-sky-300 mb-2 tracking-wide">
-              Select Service
-            </label>
-            <div className="relative group">
-              <select
-                id="service"
-                name="service"
-                value={selectedService}
-                onChange={(e) => setSelectedService(e.target.value)}
+          <form ref={formRef} onSubmit={sendEmail} className="flex flex-col gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <input
+                type="text"
+                name="user_name"
+                placeholder="Your Name"
                 required
-                className="w-full appearance-none p-3 pr-10 rounded-xl bg-white/10 text-white border border-gray-600 
-                 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all 
-                 duration-300 cursor-pointer hover:bg-white/20 backdrop-blur-md shadow-sm"
-              >
-                <option value="" disabled hidden>Choose a service...</option>
-                <option value="Web Development" className="bg-[#0f172a] text-white">Web Development</option>
-                <option value="Database Solutions" className="bg-[#0f172a] text-white">Database Solutions</option>
-                <option value="Graphics Designing" className="bg-[#0f172a] text-white">Graphics Designing</option>
-                <option value="Hosting & Domain" className="bg-[#0f172a] text-white">Hosting & Domain</option>
-                <option value="Inquiry" className="bg-[#0f172a] text-white">Other Inquiry</option>
-              </select>
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sky-400 group-hover:text-sky-300 transition-colors duration-300 pointer-events-none">
-                ▼
-              </span>
+                className="p-4 rounded-xl bg-white/15 border border-white/30 focus:border-white/60 outline-none text-white placeholder-white/70 transition-all hover:bg-white/20"
+              />
+              <input
+                type="email"
+                name="user_email"
+                placeholder="Your Email"
+                required
+                className="p-4 rounded-xl bg-white/15 border border-white/30 focus:border-white/60 outline-none text-white placeholder-white/70 transition-all hover:bg-white/20"
+              />
             </div>
-          </motion.div>
 
-          <textarea
-            name="message"
-            placeholder="Your Message"
-            rows="5"
-            required
-            className="w-full p-3 rounded-lg bg-white/10 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-sky-400"
-          ></textarea>
+            <select
+              name="user_quota"
+              required
+              className="p-4 rounded-xl bg-white text-gray-800 border border-white/30 focus:border-blue-500 outline-none cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+            >
+              <option value="">Select a Quote Type</option>
+              <option value="Web Development">Web Development</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Database Solutions">Database Solutions</option>
+              <option value="Domain & Hosting">Domain & Hosting</option>
+              <option value="Custom Request">Custom Request</option>
+            </select>
 
-          <motion.button
-            type="submit"
-            disabled={loading}
-            whileHover={{ scale: loading ? 1 : 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 shadow-md ${
-              loading ? "bg-gray-500 cursor-not-allowed" : "bg-sky-400 hover:bg-sky-500 text-white"
-            }`}
-          >
-            {loading ? "Sending..." : "Send Message"}
-          </motion.button>
-        </form>
-      </motion.div>
+            <textarea
+              name="message"
+              rows="6"
+              placeholder="Your Message..."
+              required
+              className="p-4 rounded-xl bg-white/15 border border-white/30 focus:border-white/60 outline-none text-white placeholder-white/70 resize-none transition-all hover:bg-white/20"
+            ></textarea>
 
-      {/* Success Toast */}
-      <AnimatePresence>
-        {sent && (
+            <motion.button
+              type="submit"
+              disabled={loading}
+              className="mt-4 bg-white text-blue-900 px-8 py-4 rounded-2xl font-semibold shadow-lg flex items-center justify-center gap-3 hover:scale-105 hover:bg-blue-50 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300 disabled:opacity-60"
+              whileTap={{ scale: 0.95 }}
+            >
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-t-transparent border-blue-900 rounded-full animate-spin" />
+              ) : (
+                "Send Message"
+              )}
+            </motion.button>
+          </form>
+        </motion.div>
+
+        {/* Right: Developer Animation */}
+        <motion.div
+          className="flex flex-col items-center justify-center text-center h-full"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
           <motion.div
-            key="toast"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.4 }}
-            className="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 font-medium"
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="relative w-80 h-96 sm:w-[400px] sm:h-[450px]"
           >
-            ✅ Message Sent Successfully!
+            <Image
+              src="/developer-illustration.jpg"
+              alt="Developer Illustration"
+              fill
+              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 500px"
+              className="object-contain"
+              priority
+            />
           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        </motion.div>
+      </div>
+
+      {/* Thank You Section */}
+      <motion.p
+        className="relative z-10 mt-16 text-center text-white/90 font-light tracking-wide text-sm sm:text-base max-w-xl"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.8 }}
+      >
+        ✨ Thank you for visiting us at{" "}
+        <span className="font-semibold">FiniteX Digital Solutions</span>.
+        <br />We look forward to creating something extraordinary together.
+      </motion.p>
+    </section>
   );
 }
