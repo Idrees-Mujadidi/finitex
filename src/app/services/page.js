@@ -12,18 +12,18 @@ export default function ServicesPage() {
   }, []);
 
   const particlesOptions = {
-    background: { color: { value: "#1e3a8a" } },
+    background: { color: { value: "#0f172a" } },
     fpsLimit: 60,
     interactivity: {
       events: { onHover: { enable: true, mode: "repulse" }, resize: true },
       modes: { repulse: { distance: 120, duration: 0.4 } },
     },
     particles: {
-      color: { value: "#ffffff" },
-      links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.3, width: 1 },
+      color: { value: "#38bdf8" },
+      links: { color: "#38bdf8", distance: 150, enable: true, opacity: 0.2, width: 1 },
       move: { enable: true, speed: 1, outModes: { default: "bounce" } },
       number: { value: 50, density: { enable: true, area: 800 } },
-      opacity: { value: 0.3 },
+      opacity: { value: 0.2 },
       shape: { type: "circle" },
       size: { value: { min: 2, max: 5 } },
     },

@@ -1,11 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
 import { FaLinkedin, FaInstagram, FaGithub, FaEnvelope } from "react-icons/fa";
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import { useCallback } from "react";
 
 export default function Footer() {
   const icons = [
     { icon: <FaLinkedin />, href: "https://linkedin.com", color: "#0077B5" },
-    { icon: <FaInstagram />, href: "https://instagram.com", color: "#E4405F" },
+    { icon: <FaInstagram />, href: "https://www.instagram.com/finitex.digital?", color: "#E4405F" },
     { icon: <FaGithub />, href: "https://github.com", color: "#333" },
     { icon: <FaEnvelope />, href: "mailto:contact@finitex.com", color: "#FFD700" },
   ];
@@ -18,46 +21,72 @@ export default function Footer() {
     { name: "Contact", href: "/contact" },
   ];
 
+  const particlesInit = useCallback(async (engine) => {
+    await loadSlim(engine);
+  }, []);
+
+  const particlesOptions = {
+    particles: {
+      number: { value: 25, density: { enable: true, area: 700 } },
+      color: { value: ["#4169E1", "#1E40FF", "#A9A9A9"] },
+      shape: { type: "circle" },
+      opacity: { value: 0.1, random: true },
+      size: { value: { min: 2, max: 5 }, random: true },
+      move: { enable: true, speed: 0.2, outModes: { default: "bounce" }, random: true },
+    },
+    interactivity: {
+      events: { onHover: { enable: true, mode: "repulse" } },
+      modes: { repulse: { distance: 100, duration: 0.5 } },
+    },
+    detectRetina: true,
+  };
+
   return (
-    <footer className="relative bg-gradient-to-tr from-[#0a1a5c] to-[#4169E1] text-white overflow-hidden pt-32 pb-16">
-      {/* Animated gradient blobs */}
+    <footer className="relative bg-white overflow-hidden pt-24 pb-12 text-[#0a1a5c]">
+      {/* Background Particles */}
+      <Particles
+        id="footer-particles"
+        init={particlesInit}
+        options={particlesOptions}
+        className="absolute inset-0 -z-10"
+      />
+
+      {/* Floating gradient blobs */}
       <motion.div
-        className="absolute top-[-15%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#4169E1]/30 blur-3xl"
-        animate={{ scale: [1, 1.2, 1], opacity: [0.6, 0.9, 0.6] }}
+        className="absolute top-[-8%] left-[-8%] w-[300px] h-[300px] rounded-full bg-[#4169E1]/20 blur-3xl"
+        animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.7, 0.5] }}
         transition={{ duration: 12, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-[-15%] right-[-10%] w-[450px] h-[450px] rounded-full bg-[#6C63FF]/30 blur-3xl"
-        animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.8, 0.5] }}
+        className="absolute bottom-[-8%] right-[-8%] w-[250px] h-[250px] rounded-full bg-[#1E40FF]/20 blur-3xl"
+        animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.6, 0.4] }}
         transition={{ duration: 10, repeat: Infinity }}
       />
 
-      {/* Diagonal futuristic overlay */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#4169E1]/20 via-transparent to-transparent skew-y-2 transform origin-bottom-right"></div>
-
-      {/* Footer content */}
+      {/* Single Glass Card */}
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center md:items-start gap-12"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
+        className="relative z-10 max-w-6xl mx-auto p-8 md:p-12 bg-white/20 backdrop-blur-xl rounded-4xl border border-white/20 shadow-lg flex flex-col md:flex-row justify-between gap-10"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
       >
         {/* Branding + Social */}
-        <div className="flex flex-col items-center md:items-start space-y-4 text-center md:text-left">
-          <h2 className="text-4xl font-extrabold tracking-wide">FiniteX</h2>
-          <p className="max-w-xs text-white/80">
+        <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-2">FiniteX</h2>
+          <p className="text-[#0a1a5c]/90 mb-4">
             Next-generation digital solutions for web, AI, and design.
           </p>
-          <h1 className="text-4xl font-extrabold tracking-wide">Follow Us</h1>
-          <div className="flex space-x-4 mt-2">
+          <h3 className="text-lg font-semibold mb-2">Follow Us</h3>
+          <div className="flex space-x-3 mt-2">
             {icons.map((item, index) => (
               <motion.a
                 key={index}
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 rounded-full bg-white/10 shadow-lg text-white text-xl transition-transform"
-                whileHover={{ scale: 1.3, color: item.color, backgroundColor: "white" }}
+                className="p-3 rounded-full bg-blue/20 shadow-lg text-[#0a1a5c] text-lg transition-transform"
+                whileHover={{ scale: 1.3, color: item.color, backgroundColor: "#ffffff" }}
               >
                 {item.icon}
               </motion.a>
@@ -66,13 +95,13 @@ export default function Footer() {
         </div>
 
         {/* Quick Links */}
-        <div className="flex flex-col items-center md:items-start space-y-2 text-center md:text-left">
-          <h3 className="text-xl font-semibold mb-2">Quick Links</h3>
+        <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
+          <h3 className="text-lg md:text-xl font-semibold mb-3">Quick Links</h3>
           {quickLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-white/90 hover:text-[#FFD700] transition-colors"
+              className="text-[#0a1a5c]/90 hover:text-[#4169E1] transition-colors mb-1"
             >
               {link.name}
             </a>
@@ -80,26 +109,17 @@ export default function Footer() {
         </div>
 
         {/* Contact Info */}
-        <div className="flex flex-col items-center md:items-start space-y-2 text-center md:text-left">
-          <h3 className="text-xl font-semibold mb-2">Contact</h3>
+        <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
+          <h3 className="text-lg md:text-xl font-semibold mb-3">Contact</h3>
           <p>Email: contact@finitex.com</p>
           <p>Phone: +93 700 123 456</p>
           <p>Kabul, Afghanistan</p>
         </div>
       </motion.div>
 
-      {/* Glowing horizontal line */}
-      <div className="relative mt-20 w-full flex justify-center">
-        <motion.div
-          className="h-1 w-2/3 rounded-full bg-gradient-to-r from-[#FFD700] via-[#FFFFFF] to-[#FFD700] opacity-70"
-          animate={{ x: [0, 100, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
-
       {/* Copyright */}
-      <p className="mt-6 text-center text-sm text-white/60">
-        © {new Date().getFullYear()} <span className="font-semibold text-white">FiniteX</span> — All Rights Reserved.
+      <p className="mt-8 text-center text-sm text-[#0a1a5c]/60">
+        © {new Date().getFullYear()} <span className="font-semibold">FiniteX</span> — All Rights Reserved.
       </p>
     </footer>
   );

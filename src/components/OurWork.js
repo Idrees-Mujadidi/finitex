@@ -61,7 +61,7 @@ export default function OurWork() {
         viewport={{ once: true }}
       >
         <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-white">
-          Our Work
+          Latest Work
         </h2>
         <p className="text-slate-300 text-base md:text-lg mb-12 max-w-3xl mx-auto">
           Showcasing our recent projects, crafted with passion and modern design

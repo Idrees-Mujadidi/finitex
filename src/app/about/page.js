@@ -44,7 +44,7 @@ export default function AboutSection() {
     };
 
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#0b0f1a] text-white">
+        <section className="relative w-full min-h-[120vh] overflow-hidden text-white flex flex-col justify-center bg-[#1e3a8a]">
             {/* Particles Background */}
             <Particles
                 id="about-particles"

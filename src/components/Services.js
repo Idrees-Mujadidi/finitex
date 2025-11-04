@@ -104,27 +104,31 @@ export default function Services() {
         {/* Modern Gradient Button */}
         <div className="mt-16 flex justify-center">
           <motion.button
-            whileHover={{ scale: 1.08, rotate: 1 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => router.push("/contact")}
-            className="relative px-10 py-4 text-lg font-semibold text-white 
-               bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 
-               rounded-full overflow-hidden shadow-[0_0_20px_rgba(56,189,248,0.4)] 
-               transition-all duration-500 group"
+            className="relative px-10 py-4 text-lg font-semibold text-[#0a1a5c] 
+            bg-white rounded-full overflow-hidden shadow-lg transition-all duration-300 group"
+            whileHover={{ scale: 1.05 }}
           >
-            {/* Outer Glow */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 blur-md opacity-50 group-hover:opacity-80 transition duration-500"></div>
+            {/* Outer Glow on Hover */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 
+            opacity-0 group-hover:opacity-20 transition-all duration-300 blur-md"></div>
 
             {/* Shiny Reflection Line */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent 
+            translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
 
             {/* Text Layer */}
-            <span className="relative z-10">Get in Touch</span>
+            <span className="relative z-10 group-hover:text-black transition-colors duration-300">
+              Get in Touch
+            </span>
 
             {/* Animated Border Glow */}
-            <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-all duration-500"></div>
+            <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-all duration-300"></div>
           </motion.button>
         </div>
+
+
 
       </motion.div>
     </section>

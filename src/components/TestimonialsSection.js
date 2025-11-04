@@ -26,31 +26,44 @@ export default function TestimonialsSection() {
       text: "FiniteX designed our database architecture to handle complex queries and scale comfortably.",
     },
     {
-      name: "Yousuf Haqi",
-      role: "IT Director, Kandahar Logistics",
-      country: "Afghanistan",
-      service: "Database Solutions",
-      text: "The reliability and performance of our systems improved dramatically after working with FiniteX.",
-    },
-    {
       name: "Raj Singh",
       role: "Founder, Delhi Creative Studio",
       country: "India",
       service: "Graphic Design",
       text: "For brand identity and UI/UX, FiniteX delivered designs that just ‘feel right’. Clean, modern, memorable.",
     },
-    {
-      name: "Ahmed Khan",
-      role: "CEO, Karachi Hosting Solutions",
-      country: "Pakistan",
-      service: "Hosting & Domain",
-      text: "We entrusted FiniteX with our hosting setup and domain strategy—performance, security and support were top-notch.",
-    },
+  ];
+
+  // Background particles (same as OurWork)
+  const bgParticles = [
+    { size: 60, x: 20, y: 30, color: "bg-[#FF6B6B]/20", moveFactor: 0.02 },
+    { size: 100, x: 250, y: 120, color: "bg-[#6C63FF]/20", moveFactor: 0.03 },
+    { size: 50, x: 500, y: 180, color: "bg-[#FFD93D]/20", moveFactor: 0.04 },
+    { size: 80, x: 150, y: 70, color: "bg-[#00C9FF]/20", moveFactor: 0.025 },
   ];
 
   return (
     <section className="bg-[#0f172a] text-white py-24 px-6 relative overflow-hidden">
-      {/* Fade gradients for smooth appear/disappear */}
+      {/* Background Particles */}
+      {bgParticles.map((p, i) => (
+        <motion.div
+          key={i}
+          className={`absolute rounded-full ${p.color}`}
+          style={{
+            width: p.size,
+            height: p.size,
+            top: p.y,
+            left: p.x,
+          }}
+          animate={{
+            y: [0, -15, 0],
+            x: [0, 15, 0],
+          }}
+          transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+
+      {/* Fade gradients */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#0f172a] to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#0f172a] to-transparent" />
