@@ -28,6 +28,7 @@ export default function Header() {
     <header
       className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92%] md:w-[75%] lg:w-[60%] transition-all duration-500`}
     >
+      {/* Main Header Bar */}
       <div
         className={`flex items-center justify-between px-6 h-14 rounded-full border backdrop-blur-xl transition-all duration-500
         ${scrolled ? "bg-[#0f172a]/70 border-white/15" : "bg-white/5 border-white/10"}`}
@@ -38,51 +39,48 @@ export default function Header() {
           onClick={() => router.push("/")}
         >
           <Image
-            src="/Logo.png"
+            src="/Logo.png" // Use the latest logo
             alt="FiniteX Logo"
-            width={130} // intrinsic size
-            height={90} // intrinsic size
+            width={100} // Smaller logo for production
+            height={60}
             className="object-contain w-auto h-auto"
             priority
             loading="eager"
           />
         </div>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-4 text-sm font-saans ">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-4 text-sm font-saans">
           {navItems.map((item) => (
             <button
               key={item.name}
               onClick={() => router.push(item.href)}
-              className="
-                px-4 py-2 rounded-full 
-                text-white/100 hover:text-black/100
-                transition-all duration-200
-                hover:bg-white/100 
-                active:bg-white active:text-black  /* Press effect */
-              ">
+              className="px-4 py-2 rounded-full text-white hover:text-black transition-all duration-200 hover:bg-white active:bg-white active:text-black"
+            >
               {item.name}
             </button>
           ))}
         </div>
 
-
-        {/* Hamburger */}
+        {/* Hamburger Menu (Mobile) */}
         <button
           className="flex flex-col md:hidden justify-center gap-[6px] group"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <span
-            className={`w-6 h-[2px] bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7px]" : ""
-              }`}
+            className={`w-6 h-[2px] bg-white transition-all duration-300 ${
+              menuOpen ? "rotate-45 translate-y-[7px]" : ""
+            }`}
           ></span>
           <span
-            className={`w-6 h-[2px] bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""
-              }`}
+            className={`w-6 h-[2px] bg-white transition-all duration-300 ${
+              menuOpen ? "opacity-0" : ""
+            }`}
           ></span>
           <span
-            className={`w-6 h-[2px] bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7px]" : ""
-              }`}
+            className={`w-6 h-[2px] bg-white transition-all duration-300 ${
+              menuOpen ? "-rotate-45 -translate-y-[7px]" : ""
+            }`}
           ></span>
         </button>
       </div>
