@@ -20,22 +20,22 @@ export default function Services() {
     "Graphics Design": {
       title: "Graphics Design",
       desc: "Creative visuals, branding, posters, and digital identity that stands out.",
-      image: "/Graphics.jpg",
+      image: "/graphics.jpg",
     },
     "Web Development": {
       title: "Web Development",
       desc: "Modern, fast, responsive websites built with the latest technologies.",
-      image: "/Website.jpg",
+      image: "/website.jpg",
     },
     "Database Solutions": {
       title: "Database Solutions",
       desc: "Secure, high-performance databases tailored for your business.",
-      image: "/database-services.png",
+      image: "/database.png",
     },
     "Hosting & Domain": {
       title: "Hosting & Domain",
       desc: "Reliable hosting services and domain registrations at the best prices.",
-      image: "/hosting-services.png",
+      image: "/hosting.png",
     },
   };
 
