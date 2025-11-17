@@ -20,12 +20,12 @@ export default function Services() {
     "Graphics Design": {
       title: "Graphics Design",
       desc: "Creative visuals, branding, posters, and digital identity that stands out.",
-      image: "/graphics.jpg",
+      image: "/Graphics.jpg",
     },
     "Web Development": {
       title: "Web Development",
       desc: "Modern, fast, responsive websites built with the latest technologies.",
-      image: "/website.jpg",
+      image: "/Website.jpg",
     },
     "Database Solutions": {
       title: "Database Solutions",
@@ -104,7 +104,6 @@ export default function Services() {
                 priority={true}        // ✅ ensures eager loading for above-the-fold images
                 sizes="(max-width: 768px) 70vw, (max-width: 1200px) 40vw, 320px"
               />
-
             </div>
           </div>
         </motion.div>
