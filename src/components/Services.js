@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function Services() {
   const router = useRouter();
+  const [imageError, setImageError] = useState({});
 
   const categories = [
     { name: "Graphics Design", icon: <FaPalette /> },
@@ -43,7 +44,6 @@ export default function Services() {
 
   return (
     <section className="relative bg-black text-white py-24 px-6 overflow-hidden">
-      {/* Glow effect */}
       <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] bg-blue-700 rounded-full blur-[180px] opacity-30" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -52,7 +52,6 @@ export default function Services() {
           We deliver versatile design, branding and the latest tech solutions.
         </p>
 
-        {/* Category buttons */}
         <div className="flex gap-6 mt-10 overflow-x-auto pb-3 snap-x snap-mandatory hide-scrollbar">
           {categories.map((cat) => (
             <button
@@ -70,7 +69,6 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Service details */}
         <motion.div
           key={active}
           initial={{ opacity: 0, y: 40 }}
@@ -78,7 +76,6 @@ export default function Services() {
           transition={{ duration: 0.7 }}
           className="mt-14 grid md:grid-cols-2 gap-12 items-center p-10 rounded-3xl bg-blue-900/20 border border-blue-700/30 shadow-[0_0_40px_rgba(30,64,255,0.3)]"
         >
-          {/* Text content */}
           <div>
             <h3 className="text-4xl font-bold mb-4">{services[active].title}</h3>
             <p className="text-gray-300 mb-8 leading-relaxed">{services[active].desc}</p>
@@ -93,17 +90,28 @@ export default function Services() {
             </button>
           </div>
 
-          {/* Image content */}
           <div className="flex justify-center">
-            <div className="w-full max-w-[320px] aspect-[3/4] overflow-hidden rounded-3xl shadow-xl relative">
-              <Image
-                src={services[active].image} // local path
-                alt={services[active].title}
-                fill
-                className="object-contain"
-                priority={true}        // ✅ ensures eager loading for above-the-fold images
-                sizes="(max-width: 768px) 70vw, (max-width: 1200px) 40vw, 320px"
-              />
+            <div className="w-full max-w-[320px] aspect-[3/4] overflow-hidden rounded-3xl shadow-xl relative bg-blue-900/30">
+              {!imageError[active] ? (
+                <Image
+                  src={services[active].image}
+                  alt={services[active].title}
+                  fill
+                  className="object-contain"
+                  priority={true}
+                  sizes="(max-width: 768px) 70vw, (max-width: 1200px) 40vw, 320px"
+                  onError={() => setImageError(prev => ({ ...prev, [active]: true }))}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <div className="text-6xl mb-4">
+                      {categories.find(c => c.name === active)?.icon}
+                    </div>
+                    <p className="text-sm">Image not available</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
