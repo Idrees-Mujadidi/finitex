@@ -1,0 +1,61 @@
+/* 1. Import the Google Font (Orbitron) first */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+
+/* Import the desired font (Roboto, for example) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+
+/* 2. Import Tailwind CSS (This is normally handled via your build configuration, but if manually importing, do so after the font imports) */
+@import "tailwindcss";
+
+/* 3. Define custom variables (for background, foreground colors) */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* 4. Use theme-specific styling */
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* 5. Dark mode styling */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* 6. Apply default font styles to the body */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom class for Roboto font */
+.font-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Custom font class for Orbitron */
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+/* Hide scrollbar but allow scrolling */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+@supports (scrollbar-width: none) {
+  .hide-scrollbar {
+    scrollbar-width: none;     /* Firefox */
+  }
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
