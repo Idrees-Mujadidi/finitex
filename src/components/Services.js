@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { FaCode, FaDatabase, FaPalette, FaServer } from "react-icons/fa";
 import { useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function Services() {
@@ -93,13 +92,10 @@ export default function Services() {
           <div className="flex justify-center">
             <div className="w-full max-w-[320px] aspect-[3/4] overflow-hidden rounded-3xl shadow-xl relative bg-blue-900/30">
               {!imageError[active] ? (
-                <Image
+                <img
                   src={services[active].image}
                   alt={services[active].title}
-                  fill
-                  className="object-contain"
-                  priority={true}
-                  sizes="(max-width: 768px) 70vw, (max-width: 1200px) 40vw, 320px"
+                  className="w-full h-full object-contain"
                   onError={() => setImageError(prev => ({ ...prev, [active]: true }))}
                 />
               ) : (
