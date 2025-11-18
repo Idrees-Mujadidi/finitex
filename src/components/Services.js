@@ -20,12 +20,12 @@ export default function Services() {
     "Graphics Design": {
       title: "Graphics Design",
       desc: "Creative visuals, branding, posters, and digital identity that stands out.",
-      image: "/graphics.jpg",
+      image: "/Graphics.jpg",
     },
     "Web Development": {
       title: "Web Development",
       desc: "Modern, fast, responsive websites built with the latest technologies.",
-      image: "/website.jpg",
+      image: "/webdevelopment.jpg",
     },
     "Database Solutions": {
       title: "Database Solutions",
